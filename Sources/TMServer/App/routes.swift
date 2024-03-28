@@ -18,27 +18,45 @@ import Vapor
 import Fluent
 import FluentMySQLDriver
 
-struct TestUser: Content {
-    var username: String
-}
-
 func routes(_ app: Application) throws {
-    let userInfo = ["username": "Not logged in"]
+    let userInfo = ["usernames": ["Not logged in"], "tasks": ["Nothing to do."]]
     let userController = UserController()
 
     // app.get -> GET request made
     // app.post -> POST request made
     app.post("create-account") { req in 
-        let user = try req.content.decode(TestUser.self)
+        let user = try req.content.decode(User.self)
         let username = user.username
 
         return try userController.createUser(req: req, username: username).map { creationResult in
-            return req.view.render("creation-success", ["user": username, "code": creationResult.info])
-            }
+            if creationResult.success {
+                return req.view.render("creation-success", ["user": username, "code": creationResult.info])
+            } 
+            return req.view.render("failure-page", ["error": creationResult.info])
+        }
     }
-    
+
+    app.post("login") { req in
+        let user = try req.content.decode(User.self)
+        let username = user.username
+        
+        guard let loginCode = user.loginCode else {
+            return req.view.render("failure-page", ["error": "Malformed POST request. If this was not intentional, please contact an administrator."])
+        }
+
+        return try userController.login(req: req, username: username, loginCode: loginCode).flatMap { result in
+            if result.success {
+                var taskArray: [String] = ["Nothing to do."]
+                if let userTasks = result.userModel!.tasks {
+                    taskArray = userTasks.components(separatedBy: ";")
+                }                
+                return req.view.render("backend-test", ["usernames": [username], "tasks": taskArray])
+            }
+            return req.view.render("failure-page", ["error": result.info])
+        }
+    }
                                                           
     app.get { req in
-        return req.view.render("backend_test", userInfo)
+        return req.view.render("backend-test", userInfo)
     }
 }

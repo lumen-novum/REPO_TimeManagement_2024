@@ -30,15 +30,19 @@ final public class User: Model, Content {
     public var username: String
 
     @Field(key: "LoginCode")
-    public var loginCode: String
+    public var loginCode: String?
+
+    @Field(key: "Tasks")
+    public var tasks: String?
 
     // Creates a new, empty user.
     public init() { }
 
-    public init(id: Int? = nil, username: String, loginCode: String) {
+    public init(id: Int? = nil, username: String, loginCode: String? = nil, tasks: String? = nil) {
         self.id = id
         self.username = username
         self.loginCode = loginCode
+        self.tasks = tasks
     }
 }
 

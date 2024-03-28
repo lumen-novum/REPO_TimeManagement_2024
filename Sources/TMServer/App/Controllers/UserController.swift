@@ -5,6 +5,7 @@ import FluentMySQLDriver
 public struct ServerResult {
     var success: Bool
     var info: String
+    var userModel: User? = nil
 }
 
 public class UserController {
@@ -35,18 +36,11 @@ public class UserController {
         return loginCode
     }
 
-    public func queryNameAvailablity(req: Request, username: String) throws -> EventLoopFuture<Bool> {
-        return User.query(on: req.db)
-          .filter(\.$username == username)
-          .first()
-          .map { user in
-              return user == nil
-          }
-    }
-    
     public func createUser(req: Request, username: String) throws -> EventLoopFuture<ServerResult> {
-        let isNameAvailable = try queryNameAvailablity(req: req, username: username)
-        return isNameAvailable.map { asyncCheckPassed -> ServerResult in
+        let isNameAvailable = try findModel(req: req, username: username)
+        return isNameAvailable.map { possibleUser -> ServerResult in
+            var resultInfo = "Username taken. Please choose another username."
+            let asyncCheckPassed = possibleUser == nil
             if asyncCheckPassed {
                 let loginCode = self.generateLoginCode()
                 
@@ -54,12 +48,40 @@ public class UserController {
                     User(username: username, loginCode: loginHash).save(on: req.db) 
                 }
 
-                return ServerResult(success: asyncCheckPassed, info: loginCode)
-            } else {
-                // TODO: Add proper error handling with taken usernames
-                print("username taken!")
-                return ServerResult(success: asyncCheckPassed, info: "usename taken")
+                resultInfo = loginCode
             }
+            
+            return ServerResult(success: asyncCheckPassed, info: resultInfo)
+        }
+    }
+
+    private func findModel(req: Request, username: String) throws -> EventLoopFuture<User?> {
+        return User.query(on: req.db)
+          .filter(\.$username == username)
+          .first()
+    }
+
+    private func compareCodes(req: Request, plainText: String, hash: String) -> Bool {
+        do {
+            return try req.password.verify(plainText, created: hash)
+        } catch {
+            print(error)
+            return false
+        }
+    }
+    
+    public func login(req: Request, username: String, loginCode: String) throws -> EventLoopFuture<ServerResult> {
+        let user = try findModel(req: req, username: username)
+        return user.map { userModel in
+            if userModel == nil {
+                return ServerResult(success: false, info: "User does not exist.")
+            }
+            let dbHash = userModel!.loginCode
+
+            // If login is successful, ignore the error message and include user model
+            // If login fails, use error message
+            let result = self.compareCodes(req: req, plainText: loginCode, hash: dbHash!)
+            return ServerResult(success: result, info: "Credentials are mismatched.", userModel: userModel!)
         }
     }
 }

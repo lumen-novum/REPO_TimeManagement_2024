@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TM Backend Test</title>
+  </head>
+
+  <body>
+    <p>Uh oh!</p>
+    <p>There appears to be a problem with your last action.</p>
+    <p>Info: #(error)</p>
+    <p>Please correct the error or contact an administrator and try again.</p>
+    <a href="./">Take me back home</a>
+  </body>
+</html>
