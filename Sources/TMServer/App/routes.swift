@@ -55,28 +55,10 @@ func routes(_ app: Application) throws {
             return req.view.render("failure-page", ["error": result.info])
         }
     }
-    app.get("tasks") { req in
-        return req.view.render("tasks")
-    }
-
-    app.get("settings") { req in
-        return req.view.render("settings")
-    }
-
-    app.get("contact") { req in
-        return req.view.render("contact")
-    }
-
-    app.get("account") { req in
-        return req.view.render("account")
-    }
-
-    app.get("theme") { req in
-        return req.view.render("theme")
-    }
-
-    app.get("login") { req in
-        return req.view.render("login")
+    
+    app.get(":page") { req in
+        let webpage = req.parameters.get("page")!
+        return req.view.render(webpage)
     }
     
     app.get { req in

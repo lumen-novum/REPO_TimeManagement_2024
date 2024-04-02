@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="styles/settings.css">
 </head>
 <body>
   <div class="web-menu">
@@ -19,17 +19,17 @@
     </style>
       <div class="container">
 	<div class="image-box">
-	   <a href="./account">
+	   <a href="account">
 	     <img src="https://cdn-icons-png.freepik.com/256/1144/1144760.png" alt="Account Image" width="200" height="200">
 	     </a>
 	</div>
 	<div class="image-box">
-	    <a href="./theme">
+	    <a href="theme">
 	      <img src="https://t3.ftcdn.net/jpg/02/16/77/04/360_F_216770480_JvPUk7rTOQK9ea0PJcN46rKILcyLkDWt.jpg" alt="Theme" width="200" height="200">
 	    </a>
 	    </div>
 	    <div class="image-box">
-	      <a href="./contact">
+	      <a href="contact">
 		<img src="https://static.thenounproject.com/png/509343-200.png" alt="Social" width="200" height="200">
 		</a>
 	  </div>

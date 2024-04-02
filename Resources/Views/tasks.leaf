@@ -5,17 +5,16 @@
     <meta charset="utf-8">
     <title>Tasks</title>
 
-    <script src="tasks.js"></script>
+    <script src="scripts/tasks.js"></script>
     
     <!-- Font Codes - Do Not Touch -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="tasks.css">
+    <link rel="stylesheet" href="styles/tasks.css">
     <!--Font Codes End-->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="tasks.css">
 
   </head>
   
