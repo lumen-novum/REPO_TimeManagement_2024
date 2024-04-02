@@ -29,23 +29,34 @@ func configure(_ app: Application) throws {
     guard let dbName = Environment.get("DB_NAME") else {
         fatalError("Unable to find the server credentials! Are you sure you ran the script from 'server-run.sh'?")
     }
-    guard let dbUsername = Environment.get("DB_USERNAME") else {
+    var dbUsername: String? = nil
+    var dbPassword: String? = nil
+    
+    if dbName == "FRONT-END" {
+        app.logger.notice("Time Management is running without database access! No changes will be saved!")
+    } else {
+        guard let username = Environment.get("DB_USERNAME") else {
         fatalError("Unable to find the server credentials! Are you sure you ran the script from 'server-run.sh'?")
-    }
-    guard let dbPassword = Environment.get("DB_PASSWORD") else {
+        }
+        guard let password = Environment.get("DB_PASSWORD") else {
         fatalError("Unable to find the server credentials! Are you sure you ran the script from 'server-run.sh'?")
+        }
+        dbUsername = username
+        dbPassword = password
     }
     
     var tls = TLSConfiguration.makeClientConfiguration()
     tls.certificateVerification = .none
-    app.databases.use(.mysql(
-                        hostname: "db",
-                        port: MySQLConfiguration.ianaPortNumber,
-                        username: dbUsername,
-                        password: dbPassword,
-                        database: dbName,
-                        tlsConfiguration: tls
-                      ), as: .mysql)
+    if dbName != "FRONT-END" {
+        app.databases.use(.mysql(
+                            hostname: "db",
+                            port: MySQLConfiguration.ianaPortNumber,
+                            username: dbUsername!,
+                            password: dbPassword!,
+                            database: dbName,
+                            tlsConfiguration: tls
+                          ), as: .mysql)
+    }
 
     // Set local port
     guard let portString = Environment.get("VAPOR_LOCAL_PORT"),
