@@ -10,6 +10,9 @@
   <div class="web-menu">
     <h1>Settings</h1>
     <style>
+      body {
+	  font-family: 'IBM Plex Sans KR', sans-serif;
+      }
         .image-box {
             border: 8px solid #aac2ce;
             padding: 8px; 
@@ -21,17 +24,32 @@
 	<div class="image-box">
 	   <a href="account">
 	     <img src="https://cdn-icons-png.freepik.com/256/1144/1144760.png" alt="Account Image" width="200" height="200">
-	     </a>
+	   </a>
+	   <ul>
+	     <li>Create an account to use our website/ product</li>
+	     <li>Access customized settings from your profile</li>
+	     <li>Access all features when logged into account</li>
+	   </ul>
 	</div>
 	<div class="image-box">
 	    <a href="theme">
 	      <img src="https://t3.ftcdn.net/jpg/02/16/77/04/360_F_216770480_JvPUk7rTOQK9ea0PJcN46rKILcyLkDWt.jpg" alt="Theme" width="200" height="200">
 	    </a>
+	    <ul>
+	      <li>Customize theme page</li>
+	      <li>Choose your own unique pathway</li>
+	      <li>Customize theme to your liking</li>
+	     </ul>
 	    </div>
 	    <div class="image-box">
 	      <a href="contact">
 		<img src="https://static.thenounproject.com/png/509343-200.png" alt="Social" width="200" height="200">
-		</a>
+	      </a>
+	      <ul>
+		<li>Help us make our website/product better for you</li>
+                <li>Contact us with any feedback</li>
+		<li>Help us create a website to fit your liking/needs</li>
+	      </ul>
 	  </div>
     <div class="image-box">
       <img src="https://static.thenounproject.com/png/963312-200.png" alt="Developer" width="200" height="200">
