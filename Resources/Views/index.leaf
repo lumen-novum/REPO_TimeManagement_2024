@@ -43,6 +43,7 @@
     <li><a href="#friendfeed">Friend Feed</a></li>
     <li><a href="settings">Settings</a></li>
     <li><a href="login">Login</a></li>
+    <li><a href="#create">Create Account</a><li>
   </ul>
     <style>
     .box {
