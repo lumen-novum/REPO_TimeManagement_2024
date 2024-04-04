@@ -28,11 +28,16 @@ func routes(_ app: Application) throws {
         let user = try req.content.decode(User.self)
         let username = user.username
 
-        return try userController.createUser(req: req, username: username).map { creationResult in
-            if creationResult.success {
-                return req.view.render("creation-success", ["user": username, "code": creationResult.info])
-            } 
-            return req.view.render("failure-page", ["error": creationResult.info])
+        if app.vaporStorage?.databaseActive == true {
+            return try userController.createUser(req: req, username: username).map { creationResult in
+                if creationResult.success {
+                    return req.view.render("creation-success", ["user": username, "code": creationResult.info])
+                } 
+                return req.view.render("failure-page", ["error": creationResult.info])
+            }
+        } else {
+            req.logger.error("Unable to save an account to a nonexistant database.")
+            return req.eventLoop.makeSucceededFuture(req.view.render("failure-page", ["error": "Database is not configured. Are you sure you have access to it?"]))
         }
     }
 
@@ -41,18 +46,25 @@ func routes(_ app: Application) throws {
         let username = user.username
         
         guard let loginCode = user.loginCode else {
+            req.logger.error("Invaild POST Request.")
             return req.view.render("failure-page", ["error": "Malformed POST request. If this was not intentional, please contact an administrator."])
         }
 
-        return try userController.login(req: req, username: username, loginCode: loginCode).flatMap { result in
-            if result.success {
-                var taskArray: [String] = ["Nothing to do."]
-                if let userTasks = result.userModel!.tasks {
-                    taskArray = userTasks.components(separatedBy: ";")
-                }                
-                return req.view.render("backend-test", ["usernames": [username], "tasks": taskArray])
+        if app.vaporStorage?.databaseActive == true {
+            return try userController.login(req: req, username: username, loginCode: loginCode).flatMap { result in
+                if result.success {
+                    var taskArray: [String] = ["Nothing to do."]
+                    if let userTasks = result.userModel!.tasks {
+                        taskArray = userTasks.components(separatedBy: ";")
+                    }
+                    req.logger.info("Login into \(username) successful!")
+                    return req.view.render("index")
+                }
+                return req.view.render("failure-page", ["error": result.info])
             }
-            return req.view.render("failure-page", ["error": result.info])
+        } else {
+            req.logger.error("Unable to login to a nonexistant database.")
+            return req.view.render("failure-page", ["error": "Database is not configured. Are you sure you have access to it?"])
         }
     }
     

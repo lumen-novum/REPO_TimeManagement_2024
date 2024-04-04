@@ -20,20 +20,43 @@ import Fluent
 import FluentMySQLDriver
 import Leaf
 
+// Vapor Storage and StorageKey structs
+struct VStorage {
+    var databaseActive: Bool
+}
+
+struct VStorageKey: StorageKey {
+    typealias Value = VStorage
+}
+
+extension Application {
+    var vaporStorage: VStorage? {
+        get {
+            self.storage[VStorageKey.self]
+        }
+        set {
+            self.storage[VStorageKey.self] = newValue
+        }
+    }
+}
+
 // configures your application
 func configure(_ app: Application) throws {
     // UNCOMMENT-PUBLIC to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.views.use(.leaf)
-
+    
     guard let dbName = Environment.get("DB_NAME") else {
         fatalError("Unable to find the server credentials! Are you sure you ran the script from 'server-run.sh'?")
     }
     var dbUsername: String? = nil
     var dbPassword: String? = nil
-    
-    if dbName == "FRONT-END" {
+
+    let dbActive = dbName != "FRONT-END"
+    app.vaporStorage = .init(databaseActive: dbActive)
+    if !dbActive {
         app.logger.notice("Time Management is running without database access! No changes will be saved!")
+        
     } else {
         guard let username = Environment.get("DB_USERNAME") else {
         fatalError("Unable to find the server credentials! Are you sure you ran the script from 'server-run.sh'?")
