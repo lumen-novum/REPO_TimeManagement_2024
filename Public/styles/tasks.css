@@ -73,6 +73,13 @@ body {
     top: 70vh;
     position: absolute;
     left: 50%;
+    display: inline-block;
+    cursor: pointer;
+    border: 4px solid #dce5d9;
+    color: #17202A;
+    background-color: #FDFEFE;
+    font-family: 'IBM Plex Sans KR', san-serif;
+    border-radius: 10px;
     transform: translate(-50%, -50%);
 }
 
