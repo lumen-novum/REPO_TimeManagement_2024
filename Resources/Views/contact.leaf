@@ -51,6 +51,14 @@
   }
 </style>
 </head>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+      function goBack() {
+	  window.history.back();
+      }
+      </script>
+
 <body>
 
 <h1>Contact Us</h1>
