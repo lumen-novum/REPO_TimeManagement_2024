@@ -58,6 +58,7 @@ func routes(_ app: Application) throws {
                         taskArray = userTasks.components(separatedBy: ";")
                     }
                     req.logger.info("Login into \(username) successful!")
+                    req.session.data["access"] = username
                     return req.view.render("index")
                 }
                 return req.view.render("failure-page", ["error": result.info])
@@ -65,6 +66,19 @@ func routes(_ app: Application) throws {
         } else {
             req.logger.error("Unable to login to a nonexistant database.")
             return req.view.render("failure-page", ["error": "Database is not configured. Are you sure you have access to it?"])
+        }
+    }
+    app.get("tasks") { req in
+        let possibleUser : String? = req.session.data["access"]
+
+        if possibleUser != nil {
+            let encodedTasks = userController.getTasks(req: req, username: possibleUser!)
+            return encodedTasks!.flatMap { tasks in
+                let taskArray = tasks.components(separatedBy: ";")
+                return req.view.render("tasks", ["tasks": taskArray])
+            }
+        } else {
+            return req.view.render("tasks", ["tasks": ["Not logged in"]])
         }
     }
     

@@ -44,23 +44,9 @@
 	<h2>Todo Lists</h2>
 
 	<ul class="task-list">
-
-	  <li>
-	    <label for="userInput1">Task 1</label>
-	    <input type="text" id="userInput1" name="userInput1">
-	  </li>
-
-	  <li>
-	    <label for="userInput2">Task 2</label>
-	    <input type="text" id="userInput2" name="userInput2">
-	  </li>
-
-	  <li>
-	    <label for="userInput3">Task 3</label>
-	    <input type="text" id="userInput3" name="userInput3">
-	  </li>
-	  <!-- Add more tasks if needed, start w li-->
-	  
+	  #for(item in tasks):
+	  <li>- #(item)</li>
+	  #endfor
 	</ul>
 	
       </div> <!--matches w div class main - the todo list-->

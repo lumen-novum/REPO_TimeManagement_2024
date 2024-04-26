@@ -94,6 +94,8 @@ func configure(_ app: Application) throws {
     }
     app.http.server.configuration.hostname = hostname
 
+    app.middleware.use(app.sessions.middleware)
+    
     // register routes
     try routes(app)
 }

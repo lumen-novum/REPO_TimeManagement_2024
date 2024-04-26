@@ -84,4 +84,15 @@ public class UserController {
             return ServerResult(success: result, info: "Credentials are mismatched.", userModel: userModel!)
         }
     }
+
+    func getTasks(req: Request, username: String) -> EventLoopFuture<String>? {
+        do {
+            let user = try findModel(req: req, username: username)
+            return user.map { userModel in
+                return userModel!.tasks!
+            }
+        } catch {
+            print(error)
+            return nil        }
+    }
 }
