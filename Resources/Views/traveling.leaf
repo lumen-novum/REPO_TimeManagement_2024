@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+          <button onclick="goBack()">Go Back</button>
+
+    <script>
+      function goBack() {
+	  window.history.back();
+      }
+      </script>
+    <title>Traveling Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Traveling to be Productive!</h1>
+    </header>
+    <div class="content">
+        <img src="https://docs.kony.com/marketplace/ProgressBarsLibrary/Content/Resources/Images/progressBars_travel_theme1.png" alt="Traveling">
+    </div>
+</body>
+</html>

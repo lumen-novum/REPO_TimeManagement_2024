@@ -38,7 +38,7 @@
     <!-- Navigation Bar -->
     <ul>
     <li><a href="tasks">Tasks</a></li>
-    <li><a href="#traveling">Traveling</a></li>
+    <li><a href="traveling">Traveling</a></li>
     <li><a href="#friendfeed">Friend Feed</a></li>
     <li><a href="settings">Settings</a></li>
     <li><a href="login">Login</a></li>
